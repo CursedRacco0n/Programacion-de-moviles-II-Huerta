@@ -1,0 +1,37 @@
+.login-content {
+  --background: linear-gradient(145deg, #102a43, #1f7a8c);
+}
+
+.login-card {
+  width: min(92%, 420px);
+  margin: 20vh auto 0;
+  padding: 28px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+h1 {
+  margin: 0 0 8px;
+  color: #102a43;
+  font-size: 30px;
+}
+
+.login-card > p {
+  margin: 0 0 22px;
+  color: #52606d;
+}
+
+ion-item {
+  margin-bottom: 14px;
+  --background: #f5f7fa;
+  --border-radius: 10px;
+}
+
+ion-button {
+  margin-top: 22px;
+}
+
+.error-message {
+  margin: 12px 0 0;
+}

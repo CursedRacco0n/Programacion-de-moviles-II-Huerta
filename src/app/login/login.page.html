@@ -1,0 +1,24 @@
+<ion-content class="login-content">
+  <form class="login-card" (ngSubmit)="login()">
+    <h1>Iniciar sesión</h1>
+    <p>Ingresa tus datos para continuar</p>
+
+    <ion-item>
+      <ion-input label="Correo electrónico" labelPlacement="stacked" type="email"
+        name="email" [(ngModel)]="email" autocomplete="email" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input label="Contraseña" labelPlacement="stacked" type="password"
+        name="password" [(ngModel)]="password" autocomplete="current-password" required></ion-input>
+    </ion-item>
+
+    <ion-text color="danger" *ngIf="errorMessage">
+      <p class="error-message">{{ errorMessage }}</p>
+    </ion-text>
+
+    <ion-button expand="block" type="submit" [disabled]="isLoading">
+      {{ isLoading ? 'Validando...' : 'Entrar' }}
+    </ion-button>
+  </form>
+</ion-content>
