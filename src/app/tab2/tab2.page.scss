@@ -1,16 +1,91 @@
-ion-col > button {
-  display: block;
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  font: inherit;
+.region-page {
+  --background: #f3f0ea;
 }
 
-button img {
-  display: block;
+.region-content {
+  width: min(760px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+.intro {
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #a34f2a;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  margin: 0 0 12px;
+  color: #2f261f;
+  font-size: clamp(30px, 6vw, 52px);
+  line-height: 1;
+}
+
+.intro > p:last-child {
+  max-width: 620px;
+  margin: 0;
+  color: #665a50;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.region-card,
+.preview-card {
+  margin: 0 0 20px;
+  border: 1px solid rgba(116, 84, 58, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(66, 48, 35, 0.1);
+}
+
+.region-card ion-card-title,
+.preview-card ion-card-title {
+  color: #2f261f;
+}
+
+.region-item {
+  margin-bottom: 24px;
+  --background: #faf9f7;
+  --border-radius: 10px;
+  --padding-start: 14px;
+  --inner-padding-end: 8px;
+}
+
+.region-item ion-select {
   width: 100%;
-  height: auto;
+  color: #2f261f;
+}
+
+.region-card ion-button {
+  --background: #a34f2a;
+  --background-hover: #813d20;
+  --border-radius: 10px;
+  margin-top: 8px;
+}
+
+.preview-card {
+  --background: #fffaf2;
+}
+
+.preview-card p {
+  line-height: 1.5;
+}
+
+.coming-soon {
+  margin-bottom: 0;
+  color: #a34f2a;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .region-content {
+    width: min(100% - 24px, 520px);
+    padding-top: 32px;
+  }
 }

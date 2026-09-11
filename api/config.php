@@ -2,9 +2,14 @@
 declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: http://localhost:8100');
+$allowedOrigins = ['http://localhost:8100', 'http://127.0.0.1:8100'];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+    header('Vary: Origin');
+}
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
@@ -12,13 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 $host = '127.0.0.1';
+$port = 8000;
 $database = 'mobiles2';
 $username = 'root';
 $password = '';
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;dbname=$database;charset=utf8mb4",
+        "mysql:host=$host;port=$port;dbname=$database;charset=utf8mb4",
         $username,
         $password,
         [

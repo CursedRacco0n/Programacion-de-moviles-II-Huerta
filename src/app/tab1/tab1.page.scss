@@ -1,0 +1,135 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tab1-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 24px;
+  overflow: auto;
+  background: #eef3f8;
+  pointer-events: auto;
+}
+
+.contact-card {
+  display: grid;
+  grid-template-columns: minmax(220px, 35%) 1fr;
+  width: min(900px, 100%);
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(16, 42, 67, 0.15);
+}
+
+.contact-info {
+  padding: 36px 28px;
+  color: #ffffff;
+  background: #1769aa;
+}
+
+.contact-info h1 {
+  margin: 0 0 24px;
+  font-size: 26px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  pointer-events: auto;
+}
+
+.contact-form h2 {
+  margin: 0 0 24px;
+  color: #243b53;
+}
+
+.contact-form label {
+  margin: 0 0 6px;
+  color: #334e68;
+  font-weight: 600;
+}
+
+.contact-form input,
+.contact-form textarea {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 0 0 18px;
+  padding: 10px;
+  border: 1px solid #9fb3c8;
+  border-radius: 5px;
+  color: #102a43;
+  background: #ffffff;
+  font: inherit;
+  pointer-events: auto;
+  box-sizing: border-box;
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #1769aa;
+  outline: 2px solid rgba(23, 105, 170, 0.2);
+}
+
+.send-button {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 10px 24px;
+  border: 0;
+  border-radius: 22px;
+  color: #ffffff;
+  background: #1769aa;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  pointer-events: auto;
+}
+
+.send-button:hover {
+  background: #125486;
+}
+
+.send-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.success-message {
+  color: #218739;
+  font-weight: 700;
+}
+
+.error-list {
+  margin-top: 18px;
+  padding: 12px 16px;
+  border-radius: 5px;
+  color: #8a1c1c;
+  background: #ffe5e5;
+}
+
+.error-list p {
+  margin: 4px 0;
+}
+
+@media (max-width: 700px) {
+  .tab1-page {
+    padding: 12px;
+  }
+
+  .contact-card {
+    display: block;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 24px;
+  }
+}

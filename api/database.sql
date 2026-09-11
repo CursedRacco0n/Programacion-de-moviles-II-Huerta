@@ -37,3 +37,16 @@ VALUES (
   '$2y$10$2Zda5xl7p9BZYeAcelUKQeN67vkEk5GtIu6sp7QU8Pol3UgNEFEHS'
 )
 ON DUPLICATE KEY UPDATE name = VALUES(name);
+
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  names VARCHAR(150) NOT NULL,
+  phone VARCHAR(40) NULL,
+  email VARCHAR(190) NOT NULL,
+  message TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_contact_messages_email (email),
+  KEY idx_contact_messages_created_at (created_at)
+) ENGINE=InnoDB;

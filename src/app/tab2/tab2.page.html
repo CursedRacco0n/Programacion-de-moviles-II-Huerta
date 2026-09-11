@@ -1,31 +1,57 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Photo Gallery </ion-title>
+    <ion-title>Explorar leyendas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Photo Gallery</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="region-page">
+  <main class="region-content">
+    <section class="intro">
+      <p class="eyebrow">Enciclopedia de leyendas urbanas</p>
+      <h1>Elige una región</h1>
+      <p>
+        Selecciona una región para descubrir las historias, rumores y misterios
+        que forman parte de su imaginario colectivo.
+      </p>
+    </section>
 
-  <ion-grid>
-    <ion-row>
-      @for (photo of photoService.photos(); track photo.filepath; let position = $index) {
-      <ion-col size="6">
-        <button (click)="showActionSheet(photo, position)">
-          <img [src]="photo.webviewPath" [attr.alt]="'Photo ' + (position + 1)" loading="lazy" />
-        </button>
-      </ion-col>
-      }
-    </ion-row>
-  </ion-grid>
+    <ion-card class="region-card">
+      <ion-card-header>
+        <ion-card-title>Región de exploración</ion-card-title>
+      </ion-card-header>
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="addPhotoToGallery()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+      <ion-card-content>
+        <ion-item lines="none" class="region-item">
+          <ion-label position="stacked">Selecciona una región</ion-label>
+          <ion-select
+            [(ngModel)]="selectedRegionId"
+            interface="popover"
+            aria-label="Selecciona una región"
+          >
+            @for (region of regions; track region.id) {
+              <ion-select-option [value]="region.id">
+                {{ region.name }}
+              </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+
+        <ion-button expand="block" (click)="selectRegion()">
+          Explorar región
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="preview-card" *ngIf="confirmedRegion as region">
+      <ion-card-header>
+        <ion-card-title>{{ region.name }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-text color="medium">
+          <p>{{ region.description }}</p>
+        </ion-text>
+        <p class="coming-soon">Las leyendas de esta región estarán disponibles próximamente.</p>
+      </ion-card-content>
+    </ion-card>
+  </main>
 </ion-content>

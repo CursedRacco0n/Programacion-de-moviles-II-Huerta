@@ -4,6 +4,7 @@
 2. Inicia Apache y MySQL desde XAMPP.
 3. Importa database.sql en phpMyAdmin.
 4. Si MySQL tiene una contrasena para root, actualiza $password en config.php.
+   En esta instalacion de XAMPP MySQL usa el puerto 8000.
 
 La cuenta inicial es:
 

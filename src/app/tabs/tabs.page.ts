@@ -1,4 +1,16 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  IonButton,
+  IonButtons,
+  IonHeader,
+  IonIcon,
+  IonLabel,
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { triangle, images, square } from 'ionicons/icons';
@@ -10,6 +22,18 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['tabs.page.scss'],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    IonButton,
+    IonButtons,
+    IonHeader,
+    IonIcon,
+    IonLabel,
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    IonTitle,
+    IonToolbar,
+  ],
 })
 export class TabsPage {
   constructor(

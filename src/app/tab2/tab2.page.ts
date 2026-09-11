@@ -1,9 +1,28 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, inject } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
-import { addIcons } from 'ionicons';
-import { camera, trash, close } from 'ionicons/icons';
-import type { UserPhoto } from '../services/photo.service';
-import { PhotoService } from '../services/photo.service';
+import { CommonModule } from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular';
+
+interface Region {
+  id: string;
+  name: string;
+  description: string;
+}
 
 @Component({
   selector: 'app-tab2',
@@ -11,45 +30,54 @@ import { PhotoService } from '../services/photo.service';
   styleUrls: ['tab2.page.scss'],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonButton,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonCardTitle,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonSelect,
+    IonSelectOption,
+    IonText,
+    IonTitle,
+    IonToolbar,
+  ],
 })
-export class Tab2Page implements OnInit {
-  public photoService = inject(PhotoService);
-  private actionSheetController = inject(ActionSheetController);
+export class Tab2Page {
+  readonly regions: Region[] = [
+    {
+      id: 'norteamerica',
+      name: 'Norteamérica',
+      description: 'Relatos de carreteras, pueblos abandonados y apariciones nocturnas.',
+    },
+    {
+      id: 'latinoamerica',
+      name: 'Latinoamérica',
+      description: 'Leyendas populares, espíritus protectores y misterios de cada comunidad.',
+    },
+    {
+      id: 'europa',
+      name: 'Europa',
+      description: 'Castillos, bosques antiguos y relatos transmitidos durante generaciones.',
+    },
+    {
+      id: 'asia',
+      name: 'Asia',
+      description: 'Historias urbanas modernas mezcladas con mitos y tradiciones ancestrales.',
+    },
+  ];
 
-  constructor() {
-    addIcons({ camera, trash, close });
-  }
+  selectedRegionId = this.regions[0].id;
+  confirmedRegion: Region | null = null;
 
-  async ngOnInit() {
-    await this.photoService.loadSaved();
-  }
-
-  addPhotoToGallery() {
-    this.photoService.addNewToGallery();
-  }
-
-  public async showActionSheet(photo: UserPhoto, position: number) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Photos',
-      buttons: [
-        {
-          text: 'Delete',
-          role: 'destructive',
-          icon: 'trash',
-          handler: () => {
-            this.photoService.deletePhoto(photo, position);
-          },
-        },
-        {
-          text: 'Cancel',
-          icon: 'close',
-          role: 'cancel',
-          handler: () => {
-            // Nothing to do, action sheet is automatically closed
-          },
-        },
-      ],
-    });
-    await actionSheet.present();
+  selectRegion(): void {
+    this.confirmedRegion =
+      this.regions.find((region) => region.id === this.selectedRegionId) ?? null;
   }
 }

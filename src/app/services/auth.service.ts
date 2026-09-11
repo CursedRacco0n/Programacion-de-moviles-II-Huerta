@@ -9,7 +9,7 @@ export interface LoginResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost/mobiles2-api/login.php';
+  private readonly apiUrl = 'http://localhost:9000/mobiles2-api/login.php';
 
   async login(email: string, password: string): Promise<LoginResponse> {
     const response = await axios.post<LoginResponse>(this.apiUrl, { email, password }, {

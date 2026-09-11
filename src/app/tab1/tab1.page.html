@@ -1,17 +1,41 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<main class="tab1-page">
+  <section class="contact-card">
+    <div class="contact-info">
+      <h1>Informacion de contacto</h1>
+      <p>info.contact@gmail.com</p>
+      <p>+1 (585) 902-8665</p>
+    </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <form class="contact-form" #contactForm="ngForm" (ngSubmit)="submitContactForm()" novalidate>
+      <h2>Envia un mensaje</h2>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
-</ion-content>
+      <label for="names">Nombres *</label>
+      <input id="names" name="names" type="text" [(ngModel)]="formData.names"
+        autocomplete="name" />
+
+      <label for="phone">Telefono / Celular</label>
+      <input id="phone" name="phone" type="tel" [(ngModel)]="formData.phone"
+        autocomplete="tel" />
+
+      <label for="email">Correo electronico *</label>
+      <input id="email" name="email" type="email" [(ngModel)]="formData.email"
+        autocomplete="email" />
+
+      <label for="message">Mensaje *</label>
+      <textarea id="message" name="message" rows="5"
+        [(ngModel)]="formData.message"></textarea>
+
+      <button class="send-button" type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Enviando...' : 'Enviar mensaje' }}
+      </button>
+
+      <p class="success-message" *ngIf="successMessage" role="status">
+        {{ successMessage }}
+      </p>
+
+      <div class="error-list" *ngIf="errors.length > 0" role="alert">
+        <p *ngFor="let error of errors">{{ error }}</p>
+      </div>
+    </form>
+  </section>
+</main>
