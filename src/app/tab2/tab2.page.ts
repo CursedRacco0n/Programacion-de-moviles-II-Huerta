@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -17,6 +17,8 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { RegionSelectionService } from '../services/region-selection.service';
 
 interface Region {
   id: string;
@@ -49,7 +51,10 @@ interface Region {
     IonToolbar,
   ],
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit {
+  private readonly regionSelection = inject(RegionSelectionService);
+  private readonly router = inject(Router);
+
   readonly regions: Region[] = [
     {
       id: 'norteamerica',
@@ -76,8 +81,20 @@ export class Tab2Page {
   selectedRegionId = this.regions[0].id;
   confirmedRegion: Region | null = null;
 
-  selectRegion(): void {
+  async ngOnInit(): Promise<void> {
+    const savedRegionId = await this.regionSelection.load();
+    if (savedRegionId && this.regions.some((region) => region.id === savedRegionId)) {
+      this.selectedRegionId = savedRegionId;
+      this.confirmedRegion = this.regions.find((region) => region.id === savedRegionId) ?? null;
+    }
+  }
+
+  async selectRegion(): Promise<void> {
     this.confirmedRegion =
       this.regions.find((region) => region.id === this.selectedRegionId) ?? null;
+    await this.regionSelection.select(this.selectedRegionId);
+    await this.router.navigate(['/tabs/tab3'], {
+      queryParams: { region: this.selectedRegionId },
+    });
   }
 }

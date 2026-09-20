@@ -43,8 +43,8 @@ export class TabsPage {
     addIcons({ triangle, images, square });
   }
 
-  logout(): void {
-    this.authService.logout();
+  async logout(): Promise<void> {
+    await this.authService.logout();
     void this.router.navigateByUrl('/login');
   }
 }

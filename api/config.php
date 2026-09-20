@@ -2,14 +2,12 @@
 declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
-$allowedOrigins = ['http://localhost:8100', 'http://127.0.0.1:8100'];
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-if (in_array($origin, $allowedOrigins, true)) {
-    header("Access-Control-Allow-Origin: $origin");
-    header('Vary: Origin');
-}
+// The API is used by the local Ionic development app and Capacitor WebView.
+// No cookies are used, so wildcard CORS is safe for this development setup.
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+header('Access-Control-Allow-Private-Network: true');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);

@@ -1,17 +1,54 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title>La leyenda de tu region</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="legend-page">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="large">Leyenda urbana</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <main class="legend-content">
+    @if (loading()) {
+      <section class="empty-state">
+        <p class="eyebrow">Enciclopedia de leyendas urbanas</p>
+        <h1>Cargando leyenda...</h1>
+        <p>Consultando la base de datos.</p>
+      </section>
+    } @else if (errorMessage()) {
+      <section class="empty-state error-state">
+        <p class="eyebrow">No se pudo cargar la leyenda</p>
+        <h1>Revisa la conexion con la API</h1>
+        <p>{{ errorMessage() }}</p>
+      </section>
+    } @else if (selectedLegend(); as legend) {
+      <section class="intro">
+        <p class="eyebrow">Enciclopedia de leyendas urbanas</p>
+        <h1>{{ legend.title }}</h1>
+        <p>Una historia seleccionada para la region de {{ legend.origin }}.</p>
+      </section>
+
+      <ion-card class="legend-card">
+        <ion-card-header>
+          <ion-card-title>{{ legend.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-text color="medium">
+            <p class="origin">Region: {{ legend.origin }}</p>
+          </ion-text>
+          <p class="summary">{{ legend.summary }}</p>
+          <p>{{ legend.details }}</p>
+        </ion-card-content>
+      </ion-card>
+    } @else {
+      <section class="empty-state">
+        <p class="eyebrow">Enciclopedia de leyendas urbanas</p>
+        <h1>Elige una region primero</h1>
+        <p>Ve a Tab 2, selecciona una region y vuelve a esta pestaña para descubrir su leyenda.</p>
+      </section>
+    }
+  </main>
 </ion-content>

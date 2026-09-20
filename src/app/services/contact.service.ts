@@ -18,7 +18,7 @@ export interface ContactApiResponse {
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
-  private readonly apiUrl = 'http://localhost:9000/mobiles2-api/contact_messages.php';
+  private readonly apiUrl = 'http://192.168.1.100:9000/mobiles2-api/contact_messages.php';
 
   async create(message: ContactMessage): Promise<ContactApiResponse> {
     const response = await axios.post<ContactApiResponse>(this.apiUrl, message, {
