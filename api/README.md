@@ -11,9 +11,9 @@ La cuenta inicial es:
 - Correo: admin@mobiles2.local
 - Contrasena: Cambiar123!
 
-El frontend apunta a http://192.168.1.100:9000/mobiles2-api/login.php. Para probar desde otro dispositivo,
+El frontend apunta temporalmente a http://localhost:9000/mobiles2-api/login.php. Para probar desde otro dispositivo,
 la computadora y el telefono deben estar en la misma red y el origen debe estar permitido en config.php.
 
 El endpoint de leyendas es:
 
-- GET http://192.168.1.100:9000/mobiles2-api/urban_legends.php?region=norteamerica
+- GET http://localhost:9000/mobiles2-api/urban_legends.php?region=norteamerica

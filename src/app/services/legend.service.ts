@@ -20,7 +20,7 @@ interface LegendApiResponse {
 
 @Injectable({ providedIn: 'root' })
 export class LegendService {
-  private readonly apiUrl = 'http://192.168.1.100:9000/mobiles2-api/urban_legends.php';
+  private readonly apiUrl = 'http://localhost:9000/mobiles2-api/urban_legends.php';
 
   async getByRegion(region: string): Promise<UrbanLegend> {
     const data = Capacitor.isNativePlatform()

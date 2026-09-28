@@ -12,7 +12,7 @@ export interface LoginResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly apiUrl = 'http://192.168.1.100:9000/mobiles2-api/login.php';
+  private readonly apiUrl = 'http://localhost:9000/mobiles2-api/login.php';
 
   constructor(private readonly appStorage: AppStorageService) {}
 
