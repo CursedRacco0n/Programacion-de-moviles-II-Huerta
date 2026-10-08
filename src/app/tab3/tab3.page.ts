@@ -45,7 +45,8 @@ export class Tab3Page implements OnInit {
   constructor() {
     effect(() => {
       const selectedRegionId = this.regionSelection.selectedRegionId();
-      if (selectedRegionId) {
+      const routeLegendId = this.route.snapshot.queryParamMap.get('legend');
+      if (selectedRegionId && !routeLegendId) {
         void this.loadLegend(selectedRegionId);
       }
     });
@@ -61,6 +62,7 @@ export class Tab3Page implements OnInit {
 
   private async refreshLegend(): Promise<void> {
     const routeRegionId = this.route.snapshot.queryParamMap.get('region');
+    const routeLegendId = Number(this.route.snapshot.queryParamMap.get('legend'));
     const regionId = routeRegionId ?? await this.regionSelection.load();
 
     if (!regionId) {
@@ -73,15 +75,17 @@ export class Tab3Page implements OnInit {
       await this.regionSelection.select(routeRegionId);
     }
 
-    await this.loadLegend(regionId);
+    await this.loadLegend(regionId, routeLegendId > 0 ? routeLegendId : undefined);
   }
 
-  private async loadLegend(regionId: string): Promise<void> {
+  private async loadLegend(regionId: string, legendId?: number): Promise<void> {
     const requestNumber = ++this.requestNumber;
     this.loading.set(true);
     this.errorMessage.set('');
     try {
-      const legend = await this.legendService.getByRegion(regionId);
+      const legend = legendId
+        ? await this.legendService.getById(legendId)
+        : await this.legendService.getByRegion(regionId);
       if (requestNumber === this.requestNumber) {
         this.selectedLegend.set(legend);
       }

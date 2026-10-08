@@ -13,7 +13,7 @@ import {
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { triangle, images, square } from 'ionicons/icons';
+import { mail, map, book, barChart, settings } from 'ionicons/icons';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -40,7 +40,7 @@ export class TabsPage {
     private readonly authService: AuthService,
     private readonly router: Router,
   ) {
-    addIcons({ triangle, images, square });
+    addIcons({ mail, map, book, barChart, settings });
   }
 
   async logout(): Promise<void> {

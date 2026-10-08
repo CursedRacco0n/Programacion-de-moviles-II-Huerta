@@ -25,6 +25,7 @@
           <ion-label position="stacked">Selecciona una región</ion-label>
           <ion-select
             [(ngModel)]="selectedRegionId"
+            (ionChange)="loadLegendsForSelection()"
             interface="popover"
             aria-label="Selecciona una región"
           >
@@ -36,21 +37,31 @@
           </ion-select>
         </ion-item>
 
+        <ion-item lines="none" class="region-item" *ngIf="availableLegends.length > 1">
+          <ion-label position="stacked">Selecciona una leyenda</ion-label>
+          <ion-select
+            [(ngModel)]="selectedLegendId"
+            interface="popover"
+            aria-label="Selecciona una leyenda"
+          >
+            @for (legend of availableLegends; track legend.id) {
+              <ion-select-option [value]="legend.id">
+                {{ legend.title }}
+              </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+
+        <ion-text color="medium" *ngIf="isLoadingLegends">
+          <p>Consultando leyendas...</p>
+        </ion-text>
+        <ion-text color="danger" *ngIf="selectionError">
+          <p>{{ selectionError }}</p>
+        </ion-text>
+
         <ion-button expand="block" (click)="selectRegion()">
           Explorar región
         </ion-button>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="preview-card" *ngIf="confirmedRegion as region">
-      <ion-card-header>
-        <ion-card-title>{{ region.name }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-text color="medium">
-          <p>{{ region.description }}</p>
-        </ion-text>
-        <p class="coming-soon">Las leyendas de esta región estarán disponibles próximamente.</p>
       </ion-card-content>
     </ion-card>
   </main>

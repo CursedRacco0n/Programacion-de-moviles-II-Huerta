@@ -1,0 +1,84 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Administrar mensajes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="admin-page">
+  <main class="admin-content">
+    <section class="intro">
+      <p class="eyebrow">Panel de administración</p>
+      <h1>Mensajes de contacto</h1>
+      <p>Consulta, crea, edita y elimina los mensajes almacenados en la API.</p>
+    </section>
+
+    <ion-card class="admin-card">
+      <ion-card-header><ion-card-title>Nuevo mensaje</ion-card-title></ion-card-header>
+      <ion-card-content>
+        <form (ngSubmit)="createMessage()">
+          <label for="new-names">Nombre *</label>
+          <input id="new-names" name="newNames" [(ngModel)]="newMessage.names" type="text" />
+
+          <label for="new-phone">Teléfono</label>
+          <input id="new-phone" name="newPhone" [(ngModel)]="newMessage.phone" type="tel" />
+
+          <label for="new-email">Correo *</label>
+          <input id="new-email" name="newEmail" [(ngModel)]="newMessage.email" type="email" />
+
+          <label for="new-message">Mensaje *</label>
+          <textarea id="new-message" name="newMessage" [(ngModel)]="newMessage.message" rows="3"></textarea>
+
+          <ion-button type="submit" [disabled]="isSaving">Crear mensaje</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="feedback" *ngIf="errorMessage || successMessage" role="alert">
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
+    </div>
+
+    <section class="list-heading">
+      <h2>Mensajes guardados</h2>
+      <ion-button fill="outline" (click)="loadMessages()" [disabled]="isLoading">Actualizar</ion-button>
+    </section>
+
+    <p class="loading-message" *ngIf="isLoading">Cargando mensajes...</p>
+    <p class="empty-message" *ngIf="!isLoading && messages.length === 0">No hay mensajes registrados.</p>
+
+    <ion-card class="message-card" *ngFor="let message of messages">
+      <ion-card-content>
+        <ng-container *ngIf="editingMessage?.id !== message.id; else editMessage">
+          <h3>{{ message.names }}</h3>
+          <p class="message-meta">{{ message.email }}<span *ngIf="message.phone"> · {{ message.phone }}</span></p>
+          <p>{{ message.message }}</p>
+          <div class="actions">
+            <ion-button size="small" fill="outline" (click)="startEditing(message)">Editar</ion-button>
+            <ion-button size="small" color="danger" fill="outline" (click)="deleteMessage(message)" [disabled]="isSaving">Eliminar</ion-button>
+          </div>
+        </ng-container>
+
+        <ng-template #editMessage>
+          <h3>Editar mensaje</h3>
+          <label [for]="'edit-names-' + message.id">Nombre *</label>
+          <input [id]="'edit-names-' + message.id" [name]="'editNames' + message.id" [(ngModel)]="editingMessage!.names" type="text" />
+
+          <label [for]="'edit-phone-' + message.id">Teléfono</label>
+          <input [id]="'edit-phone-' + message.id" [name]="'editPhone' + message.id" [(ngModel)]="editingMessage!.phone" type="tel" />
+
+          <label [for]="'edit-email-' + message.id">Correo *</label>
+          <input [id]="'edit-email-' + message.id" [name]="'editEmail' + message.id" [(ngModel)]="editingMessage!.email" type="email" />
+
+          <label [for]="'edit-message-' + message.id">Mensaje *</label>
+          <textarea [id]="'edit-message-' + message.id" [name]="'editMessage' + message.id" [(ngModel)]="editingMessage!.message" rows="3"></textarea>
+
+          <div class="actions">
+            <ion-button size="small" (click)="updateMessage()" [disabled]="isSaving">Guardar PATCH</ion-button>
+            <ion-button size="small" fill="outline" (click)="replaceMessage()" [disabled]="isSaving">Reemplazar PUT</ion-button>
+            <ion-button size="small" fill="clear" (click)="cancelEditing()">Cancelar</ion-button>
+          </div>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+  </main>
+</ion-content>

@@ -1,0 +1,59 @@
+.statistics-page {
+  --background: #f7f3ec;
+}
+
+.statistics-content {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 40px 18px 90px;
+}
+
+.intro { margin-bottom: 24px; }
+.eyebrow {
+  margin: 0 0 10px;
+  color: #a45732;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+h1 {
+  margin: 0 0 12px;
+  color: #173042;
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 1.05;
+}
+.intro > p:last-child, .chart-description, .state-card p { color: #547184; line-height: 1.6; }
+.summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.summary-card, .chart-card, .state-card {
+  margin: 0 0 18px;
+  border: 1px solid #d8e1e3;
+  border-radius: 18px;
+  box-shadow: 0 14px 30px rgba(23, 48, 66, .1);
+}
+.summary-card ion-card-content { display: flex; flex-direction: column; gap: 4px; }
+.summary-card strong { color: #c56a3b; font-family: Georgia, serif; font-size: 2.4rem; }
+.summary-card span { color: #547184; font-weight: 700; }
+.chart-card ion-card-title { color: #173042; font-family: Georgia, serif; }
+.chart { display: block; width: 100%; min-height: 280px; overflow: visible; }
+.chart-description { margin-top: 0; }
+.state-card { padding: 24px; }
+.state-card h2 { color: #173042; }
+.error-state { border-color: #d8907a; }
+
+:host ::ng-deep .axis path, :host ::ng-deep .axis line { stroke: #b9c8ca; }
+:host ::ng-deep .axis text, :host ::ng-deep .grid text { fill: #547184; font-size: 12px; }
+:host ::ng-deep .grid path { display: none; }
+:host ::ng-deep .grid line { stroke: #dce5e5; stroke-dasharray: 3 4; }
+:host ::ng-deep .bar { fill: #c56a3b; }
+:host ::ng-deep .value-label, :host ::ng-deep .map-label { fill: #173042; font-size: 12px; font-weight: 700; text-anchor: middle; }
+:host ::ng-deep .map-region { stroke: #f7f3ec; stroke-width: 2; }
+:host ::ng-deep .share-slice { stroke: #f7f3ec; stroke-width: 3; }
+:host ::ng-deep .donut-total { fill: #173042; font-family: Georgia, serif; font-size: 34px; font-weight: 700; }
+:host ::ng-deep .donut-caption { fill: #547184; font-size: 13px; }
+
+@media (max-width: 560px) {
+  .summary-grid { grid-template-columns: 1fr; }
+  .chart { min-height: 230px; }
+}

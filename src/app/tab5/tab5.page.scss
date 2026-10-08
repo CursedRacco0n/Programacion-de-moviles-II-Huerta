@@ -1,0 +1,23 @@
+.admin-page { --background: #f7f3ec; }
+.admin-content { max-width: 900px; margin: 0 auto; padding: 40px 18px 90px; }
+.intro { margin-bottom: 24px; }
+.eyebrow { margin: 0 0 10px; color: #a45732; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin: 0 0 12px; color: #173042; font-family: Georgia, serif; font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.05; }
+.intro > p:last-child, .loading-message, .empty-message { color: #547184; line-height: 1.6; }
+.admin-card, .message-card { margin: 0 0 18px; border: 1px solid #d8e1e3; border-radius: 18px; box-shadow: 0 14px 30px rgba(23, 48, 66, .1); }
+.admin-card ion-card-title, .message-card h3 { color: #173042; font-family: Georgia, serif; }
+form, .message-card ion-card-content { display: grid; gap: 9px; }
+label { color: #385766; font-size: .9rem; font-weight: 700; }
+input, textarea { box-sizing: border-box; width: 100%; border: 1px solid #c7d5d8; border-radius: 9px; background: #fff; color: #173042; font: inherit; padding: 11px 12px; }
+textarea { resize: vertical; }
+input:focus, textarea:focus { border-color: #c56a3b; outline: 2px solid rgba(197, 106, 59, .18); }
+.feedback { margin: 0 0 18px; }
+.error-message { color: #a33f3f; }
+.success-message { color: #2d755f; }
+.list-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 28px 0 14px; }
+.list-heading h2 { margin: 0; color: #173042; font-family: Georgia, serif; }
+.message-card h3 { margin: 0; font-size: 1.3rem; }
+.message-card p { color: #385766; line-height: 1.55; }
+.message-meta { font-size: .9rem; font-weight: 700; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.actions ion-button { margin: 0; }

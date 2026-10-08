@@ -19,6 +19,7 @@ import {
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { RegionSelectionService } from '../services/region-selection.service';
+import { LegendService, UrbanLegend } from '../services/legend.service';
 
 interface Region {
   id: string;
@@ -54,6 +55,7 @@ interface Region {
 export class Tab2Page implements OnInit {
   private readonly regionSelection = inject(RegionSelectionService);
   private readonly router = inject(Router);
+  private readonly legendService = inject(LegendService);
 
   readonly regions: Region[] = [
     {
@@ -80,21 +82,59 @@ export class Tab2Page implements OnInit {
 
   selectedRegionId = this.regions[0].id;
   confirmedRegion: Region | null = null;
+  availableLegends: UrbanLegend[] = [];
+  selectedLegendId: number | null = null;
+  isLoadingLegends = false;
+  selectionError = '';
 
   async ngOnInit(): Promise<void> {
     const savedRegionId = await this.regionSelection.load();
     if (savedRegionId && this.regions.some((region) => region.id === savedRegionId)) {
       this.selectedRegionId = savedRegionId;
       this.confirmedRegion = this.regions.find((region) => region.id === savedRegionId) ?? null;
+      await this.loadLegendsForSelection();
+    }
+  }
+
+  async loadLegendsForSelection(): Promise<void> {
+    this.availableLegends = [];
+    this.selectedLegendId = null;
+    this.selectionError = '';
+    this.isLoadingLegends = true;
+
+    try {
+      this.availableLegends = await this.legendService.getAllByRegion(this.selectedRegionId);
+      if (this.availableLegends.length === 1) {
+        this.selectedLegendId = this.availableLegends[0].id;
+      }
+    } catch (error) {
+      this.selectionError = error instanceof Error
+        ? error.message
+        : 'No fue posible cargar las leyendas de la región.';
+    } finally {
+      this.isLoadingLegends = false;
     }
   }
 
   async selectRegion(): Promise<void> {
+    if (this.availableLegends.length === 0 && !this.isLoadingLegends) {
+      await this.loadLegendsForSelection();
+    }
+
+    if (this.isLoadingLegends || this.availableLegends.length === 0) {
+      return;
+    }
+
+    if (this.availableLegends.length > 1 && !this.selectedLegendId) {
+      this.selectionError = 'Selecciona una leyenda para continuar.';
+      return;
+    }
+
     this.confirmedRegion =
       this.regions.find((region) => region.id === this.selectedRegionId) ?? null;
     await this.regionSelection.select(this.selectedRegionId);
     await this.router.navigate(['/tabs/tab3'], {
-      queryParams: { region: this.selectedRegionId },
+      queryParams: { region: this.selectedRegionId, legend: this.selectedLegendId },
     });
   }
 }

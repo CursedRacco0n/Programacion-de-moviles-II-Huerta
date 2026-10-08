@@ -15,12 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 $regionSlug = trim((string) ($_GET['region'] ?? ''));
-if ($regionSlug === '') {
-    respond(['success' => false, 'message' => 'El parametro region es obligatorio.'], 400);
+$legendId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$loadAll = ($_GET['all'] ?? '') === '1';
+
+if ($regionSlug === '' && ($legendId === false || $legendId === null || $legendId < 1)) {
+    respond(['success' => false, 'message' => 'El parametro region o id es obligatorio.'], 400);
 }
 
 try {
-    $statement = $pdo->prepare(
+    $query =
         'SELECT
             ul.id,
             r.slug AS region,
@@ -33,11 +36,28 @@ try {
             ul.updated_at
          FROM urban_legends ul
          INNER JOIN regions r ON r.id = ul.region_id
-         WHERE r.slug = :region
-         ORDER BY ul.created_at ASC
-         LIMIT 1'
+         WHERE ' . ($legendId !== false && $legendId !== null && $legendId > 0
+            ? 'ul.id = :id'
+            : 'r.slug = :region') .
+        ' ORDER BY ul.created_at ASC' . ($loadAll ? '' : ' LIMIT 1');
+
+    $statement = $pdo->prepare($query);
+    $statement->execute(
+        $legendId !== false && $legendId !== null && $legendId > 0
+            ? ['id' => $legendId]
+            : ['region' => $regionSlug]
     );
-    $statement->execute(['region' => $regionSlug]);
+
+    if ($loadAll && $regionSlug !== '') {
+        $legends = $statement->fetchAll();
+
+        if (!$legends) {
+            respond(['success' => false, 'message' => 'No hay leyendas para la region seleccionada.'], 404);
+        }
+
+        respond(['success' => true, 'data' => $legends]);
+    }
+
     $legend = $statement->fetch();
 
     if (!$legend) {

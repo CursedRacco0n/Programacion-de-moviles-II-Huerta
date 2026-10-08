@@ -14,7 +14,7 @@ export interface UrbanLegend {
 
 interface LegendApiResponse {
   success: boolean;
-  data?: UrbanLegend;
+  data?: UrbanLegend | UrbanLegend[];
   message?: string;
 }
 
@@ -27,17 +27,41 @@ export class LegendService {
       ? await this.getWithNativeHttp(region)
       : await this.getWithAxios(region);
 
-    if (!data.success || !data.data) {
+    if (!data.success || !data.data || Array.isArray(data.data)) {
       throw new Error(data.message ?? 'No se encontro una leyenda.');
     }
 
     return data.data;
   }
 
-  private async getWithNativeHttp(region: string): Promise<LegendApiResponse> {
+  async getAllByRegion(region: string): Promise<UrbanLegend[]> {
+    const data = Capacitor.isNativePlatform()
+      ? await this.getWithNativeHttp(region, { all: '1' })
+      : await this.getWithAxios(region, { all: '1' });
+
+    if (!data.success || !Array.isArray(data.data)) {
+      throw new Error(data.message ?? 'No se encontraron leyendas.');
+    }
+
+    return data.data;
+  }
+
+  async getById(id: number): Promise<UrbanLegend> {
+    const data = Capacitor.isNativePlatform()
+      ? await this.getWithNativeHttp('', { id: String(id) })
+      : await this.getWithAxios('', { id: String(id) });
+
+    if (!data.success || !data.data || Array.isArray(data.data)) {
+      throw new Error(data.message ?? 'No se encontro la leyenda seleccionada.');
+    }
+
+    return data.data;
+  }
+
+  private async getWithNativeHttp(region: string, params: Record<string, string> = {}): Promise<LegendApiResponse> {
     const response = await CapacitorHttp.get({
       url: this.apiUrl,
-      params: { region },
+      params: region ? { region, ...params } : params,
       connectTimeout: 10000,
       readTimeout: 10000,
       responseType: 'json',
@@ -50,9 +74,9 @@ export class LegendService {
     return this.parseResponse(response.data);
   }
 
-  private async getWithAxios(region: string): Promise<LegendApiResponse> {
+  private async getWithAxios(region: string, params: Record<string, string> = {}): Promise<LegendApiResponse> {
     const response = await axios.get<LegendApiResponse>(this.apiUrl, {
-      params: { region },
+      params: region ? { region, ...params } : params,
       timeout: 10000,
     });
 

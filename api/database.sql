@@ -91,8 +91,8 @@ ON DUPLICATE KEY UPDATE
 INSERT INTO urban_legends (region_id, title, summary, content)
 SELECT id,
        'El autoestopista fantasma',
-       'Una persona aparece de noche en una carretera y pide que la lleven a casa.',
-       'Cuando el conductor llega al destino indicado, el pasajero ha desaparecido. En algunas versiones, la familia confirma que murio anos atras.'
+       'Una persona aparece de noche en una carretera y pide que la lleven a casa, pero su presencia guarda un misterio.',
+       'El autoestopista fantasma aparece en una carretera solitaria y pide al conductor que lo acerque a un lugar cercano. Durante el trayecto permanece en silencio y, al llegar al destino indicado, desaparece sin abrir la puerta. En algunas versiones, la familia confirma que murio anos atras y que suele aparecer en el aniversario de su accidente.'
 FROM regions
 WHERE slug = 'norteamerica'
   AND NOT EXISTS (
@@ -102,8 +102,8 @@ WHERE slug = 'norteamerica'
 INSERT INTO urban_legends (region_id, title, summary, content)
 SELECT id,
        'La Llorona',
-       'Una figura vestida de blanco recorre rios y calles durante la noche.',
-       'La historia cuenta que busca a sus hijos y que su lamento anuncia una aparicion cercana. Es una de las leyendas mas extendidas de la region.'
+       'Una figura vestida de blanco recorre rios y calles durante la noche mientras busca a sus hijos.',
+       'La Llorona es descrita como una figura vestida de blanco que recorre rios, puentes y calles durante la noche. Su lamento se escucha antes de que aparezca y, segun la tradicion, anuncia que alguien se encuentra cerca del agua. Es una de las leyendas mas extendidas de Latinoamerica y cada comunidad conserva una version distinta de su origen.'
 FROM regions
 WHERE slug = 'latinoamerica'
   AND NOT EXISTS (
@@ -113,8 +113,8 @@ WHERE slug = 'latinoamerica'
 INSERT INTO urban_legends (region_id, title, summary, content)
 SELECT id,
        'La dama de blanco',
-       'Una aparicion se presenta cerca de castillos, puentes y caminos antiguos.',
-       'Segun el lugar, la dama puede ser un espiritu que protege un secreto o una advertencia para quienes viajan solos durante la noche.'
+       'Una aparicion se presenta cerca de castillos, puentes y caminos antiguos para advertir a quienes viajan solos.',
+       'La dama de blanco se presenta cerca de castillos, puentes y caminos antiguos, especialmente cuando cae la noche. Algunas historias la describen como el espiritu de una persona que espera regresar a su hogar; otras la consideran protectora de un secreto familiar. Quienes la encuentran reciben una advertencia antes de verla desaparecer entre la niebla.'
 FROM regions
 WHERE slug = 'europa'
   AND NOT EXISTS (
@@ -124,13 +124,25 @@ WHERE slug = 'europa'
 INSERT INTO urban_legends (region_id, title, summary, content)
 SELECT id,
        'Kuchisake-onna',
-       'Una mujer con cubrebocas pregunta a los caminantes si la consideran hermosa.',
-       'La leyenda japonesa dice que su respuesta determina la siguiente pregunta y que la aparicion persigue a quienes intentan escapar.'
+       'Una mujer con cubrebocas pregunta a los caminantes si la consideran hermosa y espera una respuesta durante la noche.',
+       'Kuchisake-onna es una aparicion que camina por calles poco transitadas y lleva un cubrebocas que oculta su rostro. Se acerca a los caminantes y pregunta si la consideran hermosa; despues, la respuesta determina la siguiente pregunta y el rumbo de la historia. La leyenda advierte que quienes intentan escapar pueden volver a encontrarse con ella en otra calle.'
 FROM regions
 WHERE slug = 'asia'
   AND NOT EXISTS (
     SELECT 1 FROM urban_legends WHERE title = 'Kuchisake-onna'
   );
+
+INSERT INTO urban_legends (region_id, title, summary, content)
+SELECT id,
+       'El Kumiho',
+       'Un zorro de nueve colas que puede adoptar forma humana y aparece en relatos nocturnos de Corea.',
+       'El Kumiho es una criatura mitologica asociada con la transformacion, los secretos y los caminos solitarios. Algunas versiones modernas lo presentan como un personaje que busca dejar atras su naturaleza sobrenatural.'
+FROM regions
+WHERE slug = 'asia'
+  AND NOT EXISTS (
+    SELECT 1 FROM urban_legends WHERE title = 'El Kumiho'
+  );
+
 
 /*INSERT INTO urban_legends (region_id, title, summary, content)
 SELECT id,

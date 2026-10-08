@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Estadísticas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="statistics-page">
+  <main class="statistics-content">
+    <section class="intro">
+      <p class="eyebrow">Lectura de la enciclopedia</p>
+      <h1>El mapa de las leyendas</h1>
+      <p>Explora cómo se distribuyen las leyendas urbanas almacenadas en la base de datos.</p>
+    </section>
+
+    @if (isLoading()) {
+      <section class="state-card"><h2>Cargando estadísticas...</h2><p>Consultando la API.</p></section>
+    } @else if (errorMessage()) {
+      <section class="state-card error-state"><h2>No se pudieron cargar las estadísticas</h2><p>{{ errorMessage() }}</p></section>
+    } @else {
+      <div class="summary-grid">
+        <ion-card class="summary-card">
+          <ion-card-content><strong>{{ totalLegends() }}</strong><span>Leyendas registradas</span></ion-card-content>
+        </ion-card>
+        <ion-card class="summary-card">
+          <ion-card-content><strong>{{ statistics().length }}</strong><span>Regiones disponibles</span></ion-card-content>
+        </ion-card>
+      </div>
+
+      <ion-card class="chart-card">
+        <ion-card-header><ion-card-title>Leyendas por región</ion-card-title></ion-card-header>
+        <ion-card-content><svg #barChart class="chart" role="img" aria-label="Grafica de barras de leyendas por region"></svg></ion-card-content>
+      </ion-card>
+
+      <ion-card class="chart-card">
+        <ion-card-header><ion-card-title>Mapa regional</ion-card-title></ion-card-header>
+        <ion-card-content><svg #mapChart class="chart" role="img" aria-label="Mapa de leyendas por region"></svg></ion-card-content>
+      </ion-card>
+
+      <ion-card class="chart-card">
+        <ion-card-header><ion-card-title>Participación del catálogo</ion-card-title></ion-card-header>
+        <ion-card-content>
+          <p class="chart-description">Porcentaje relativo de leyendas que aporta cada región.</p>
+          <svg #shareChart class="chart" role="img" aria-label="Grafica de dona de participacion por region"></svg>
+        </ion-card-content>
+      </ion-card>
+    }
+  </main>
+</ion-content>
