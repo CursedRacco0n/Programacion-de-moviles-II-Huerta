@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Capacitor, CapacitorHttp } from '@capacitor/core';
 import axios from 'axios';
+import { AppStorageService } from './storage.service';
 
 export interface RegionStatistic {
   region: string;
@@ -19,16 +20,27 @@ export interface StatisticsResponse {
 export class StatisticsService {
   private readonly apiUrl = 'http://localhost:9000/mobiles2-api/region_stats.php';
 
+  constructor(private readonly appStorage: AppStorageService) {}
+
   async getRegionStatistics(): Promise<RegionStatistic[]> {
-    const response = Capacitor.isNativePlatform()
-      ? await this.getWithNativeHttp()
-      : await this.getWithAxios();
+    try {
+      const response = Capacitor.isNativePlatform()
+        ? await this.getWithNativeHttp()
+        : await this.getWithAxios();
 
-    if (!response.success || !response.data) {
-      throw new Error(response.message ?? 'No se pudieron cargar las estadisticas.');
+      if (!response.success || !response.data) {
+        throw new Error(response.message ?? 'No se pudieron cargar las estadisticas.');
+      }
+
+      await this.appStorage.set('region_statistics_cache', response.data);
+      return response.data;
+    } catch (error) {
+      const cached = await this.appStorage.get<RegionStatistic[]>('region_statistics_cache');
+      if (cached?.length) {
+        return cached;
+      }
+      throw error;
     }
-
-    return response.data;
   }
 
   private async getWithNativeHttp(): Promise<StatisticsResponse> {

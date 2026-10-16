@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { mail, map, book, barChart, settings } from 'ionicons/icons';
 import { AuthService } from '../services/auth.service';
+import { ConnectivityService } from '../services/connectivity.service';
 
 @Component({
   selector: 'app-tabs',
@@ -36,6 +37,9 @@ import { AuthService } from '../services/auth.service';
   ],
 })
 export class TabsPage {
+  private readonly connectivity = inject(ConnectivityService);
+  readonly isOnline = this.connectivity.isOnline;
+
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,

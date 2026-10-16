@@ -72,9 +72,9 @@ export class Tab5Page {
 
     this.isSaving = true;
     try {
-      await this.contactService.create({ ...this.newMessage });
+      const response = await this.contactService.create({ ...this.newMessage });
       this.newMessage = this.emptyMessage();
-      this.successMessage = 'Mensaje creado correctamente.';
+      this.successMessage = response.message ?? 'Mensaje creado correctamente.';
       await this.loadMessages();
     } catch (error: unknown) {
       this.errorMessage = this.getErrorMessage(error, 'No se pudo crear el mensaje.');
@@ -116,8 +116,8 @@ export class Tab5Page {
     this.resetFeedback();
     this.isSaving = true;
     try {
-      await this.contactService.delete(message.id);
-      this.successMessage = 'Mensaje eliminado correctamente.';
+      const response = await this.contactService.delete(message.id);
+      this.successMessage = response.message ?? 'Mensaje eliminado correctamente.';
       await this.loadMessages();
     } catch (error: unknown) {
       this.errorMessage = this.getErrorMessage(error, 'No se pudo eliminar el mensaje.');
@@ -135,14 +135,13 @@ export class Tab5Page {
     const messageId = this.editingMessage.id;
     try {
       if (method === 'patch') {
-        await this.contactService.update(messageId, message);
+        const response = await this.contactService.update(messageId, message);
+        this.successMessage = response.message ?? 'Mensaje actualizado con PATCH.';
       } else {
-        await this.contactService.replace(messageId, message);
+        const response = await this.contactService.replace(messageId, message);
+        this.successMessage = response.message ?? 'Mensaje reemplazado con PUT.';
       }
       this.editingMessage = null;
-      this.successMessage = method === 'patch'
-        ? 'Mensaje actualizado con PATCH.'
-        : 'Mensaje reemplazado con PUT.';
       await this.loadMessages();
     } catch (error: unknown) {
       this.errorMessage = this.getErrorMessage(error, 'No se pudo guardar el mensaje.');

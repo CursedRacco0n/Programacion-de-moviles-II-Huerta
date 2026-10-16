@@ -56,10 +56,10 @@ export class Tab1Page {
     this.isSubmitting = true;
 
     try {
-      await this.contactService.create({ ...this.formData });
+      const response = await this.contactService.create({ ...this.formData });
       this.zone.run(() => {
         this.isSubmitting = false;
-        this.successMessage = 'Mensaje enviado correctamente.';
+        this.successMessage = response.message ?? 'Mensaje enviado correctamente.';
         this.formData = { names: '', phone: '', email: '', message: '' };
       });
     } catch (error: unknown) {
