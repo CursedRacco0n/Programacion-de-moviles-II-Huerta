@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Metadata de imagen</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="metadata-page">
+  <main class="metadata-content">
+    <section class="intro">
+      <p class="eyebrow">Archivo local</p>
+      <h1>Datos de tus fotos</h1>
+      <p>Consulta la información guardada de las imágenes capturadas desde la aplicación.</p>
+    </section>
+
+    @if (photos().length === 0) {
+      <ion-card class="metadata-card"><ion-card-content>No hay fotos guardadas. Abre la cámara para capturar una.</ion-card-content></ion-card>
+    } @else {
+      <div class="photo-list">
+        @for (photo of photos(); track photo.filepath) {
+          <button class="photo-option" [class.active]="selectedPhoto()?.filepath === photo.filepath" (click)="selectPhoto(photo)">
+            <img [src]="photo.webviewPath" alt="Foto guardada" />
+            <span>{{ photo.filter ?? 'Original' }}</span>
+          </button>
+        }
+      </div>
+
+      @if (selectedPhoto(); as photo) {
+        <ion-card class="metadata-card">
+          <ion-card-header><ion-card-title>Imagen seleccionada</ion-card-title></ion-card-header>
+          <ion-card-content>
+            <img class="selected-image" [src]="photo.webviewPath" alt="Imagen seleccionada" />
+            @if (metadata(); as data) {
+              <dl class="metadata-list">
+                <dt>Archivo</dt><dd>{{ data.fileName }}</dd>
+                <dt>Ruta</dt><dd>{{ data.path }}</dd>
+                <dt>Dimensiones</dt><dd>{{ data.width }} x {{ data.height }} px</dd>
+                <dt>Filtro</dt><dd>{{ data.filter }}</dd>
+                <dt>Fecha de captura</dt><dd>{{ data.createdAt }}</dd>
+                <dt>Tamaño</dt><dd>{{ data.fileSize }}</dd>
+              </dl>
+              @if (objectKeys(data.exif).length > 0) {
+                <h2>EXIF</h2>
+                <dl class="metadata-list">
+                  @for (entry of objectEntries(data.exif); track entry[0]) {
+                    <dt>{{ entry[0] }}</dt><dd>{{ entry[1] }}</dd>
+                  }
+                </dl>
+              }
+            }
+          </ion-card-content>
+        </ion-card>
+      }
+    }
+    @if (errorMessage()) { <p class="error-message">{{ errorMessage() }}</p> }
+  </main>
+</ion-content>

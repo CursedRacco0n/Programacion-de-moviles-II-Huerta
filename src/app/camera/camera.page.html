@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Camara y filtros</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="camera-page">
+  <main class="camera-content">
+    <section class="intro">
+      <p class="eyebrow">Captura creativa</p>
+      <h1>Guarda una nueva imagen</h1>
+      <p>Toma una foto, aplica un filtro y conserva sus datos en el dispositivo.</p>
+    </section>
+
+    <ion-card class="camera-card">
+      <ion-card-content>
+        @if (image(); as photo) {
+          <img class="preview" [src]="photo" [style.filter]="filterStyle()" alt="Vista previa de la foto" />
+        } @else {
+          <div class="empty-preview">Aun no hay una foto capturada.</div>
+        }
+
+        <ion-button expand="block" (click)="takePhoto()">Abrir camara</ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    @if (image()) {
+      <ion-card class="camera-card">
+        <ion-card-header><ion-card-title>Filtros</ion-card-title></ion-card-header>
+        <ion-card-content>
+          <div class="filter-grid">
+            @for (filter of filters; track filter.id) {
+              <button class="filter-button" [class.active]="selectedFilter.id === filter.id" (click)="selectFilter(filter)">
+                <span [style.filter]="filter.css">Aa</span>{{ filter.label }}
+              </button>
+            }
+          </div>
+          <ion-button expand="block" (click)="savePhoto()" [disabled]="isSaving()">
+            {{ isSaving() ? 'Guardando...' : 'Guardar foto filtrada' }}
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    }
+
+    @if (successMessage()) { <p class="success-message">{{ successMessage() }}</p> }
+    @if (errorMessage()) { <p class="error-message">{{ errorMessage() }}</p> }
+
+    <ion-button fill="outline" expand="block" (click)="openMetadata()">Ver metadata guardada</ion-button>
+  </main>
+</ion-content>

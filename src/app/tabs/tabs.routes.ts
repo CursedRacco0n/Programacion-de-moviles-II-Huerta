@@ -27,6 +27,14 @@ export const routes: Routes = [
         loadComponent: () => import('../tab5/tab5.page').then((m) => m.Tab5Page),
       },
       {
+        path: 'camera',
+        loadComponent: () => import('../camera/camera.page').then((m) => m.CameraPage),
+      },
+      {
+        path: 'photo-metadata',
+        loadComponent: () => import('../photo-metadata/photo-metadata.page').then((m) => m.PhotoMetadataPage),
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full',

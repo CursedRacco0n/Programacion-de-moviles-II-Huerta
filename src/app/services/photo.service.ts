@@ -16,6 +16,60 @@ export class PhotoService {
 
   private platform = inject(Platform);
 
+  public async capturePhoto(): Promise<string> {
+    const capturedPhoto = await Camera.getPhoto({
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera,
+      quality: 100,
+    });
+
+    if (capturedPhoto.dataUrl) {
+      return capturedPhoto.dataUrl;
+    }
+
+    if (capturedPhoto.webPath) {
+      return this.base64FromPath(capturedPhoto.webPath);
+    }
+
+    throw new Error('La camara no devolvio una imagen.');
+  }
+
+  public async saveEditedPhoto(
+    dataUrl: string,
+    filter: string,
+    width: number,
+    height: number,
+  ): Promise<UserPhoto> {
+    const base64Data = dataUrl.substring(dataUrl.indexOf(',') + 1);
+    const fileSize = Math.floor((base64Data.length * 3) / 4) - (base64Data.endsWith('==') ? 2 : base64Data.endsWith('=') ? 1 : 0);
+    const fileName = `${Date.now()}.jpeg`;
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Data,
+    });
+
+    const savedPhoto: UserPhoto = {
+      filepath: this.platform.is('hybrid') ? savedFile.uri : fileName,
+      webviewPath: this.platform.is('hybrid')
+        ? Capacitor.convertFileSrc(savedFile.uri)
+        : dataUrl,
+      filter,
+      width,
+      height,
+      size: fileSize,
+      createdAt: new Date().toISOString(),
+    };
+
+    this.photos.update((photos) => [savedPhoto, ...photos]);
+    await Preferences.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos()),
+    });
+
+    return savedPhoto;
+  }
+
   /* Use the device camera to take a photo:
   // https://capacitor.ionicframework.com/docs/apis/camera
 
@@ -151,4 +205,9 @@ export class PhotoService {
 export interface UserPhoto {
   filepath: string;
   webviewPath?: string;
+  filter?: string;
+  width?: number;
+  height?: number;
+  size?: number;
+  createdAt?: string;
 }
