@@ -35,6 +35,10 @@ export const routes: Routes = [
         loadComponent: () => import('../photo-metadata/photo-metadata.page').then((m) => m.PhotoMetadataPage),
       },
       {
+        path: 'location-map',
+        loadComponent: () => import('../location-map/location-map.page').then((m) => m.LocationMapPage),
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full',

@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Mi ubicacion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="location-page">
+  <main class="location-content">
+    <section class="intro">
+      <p class="eyebrow">Mapa interactivo</p>
+      <h1>Tu region en el mapa</h1>
+      <p>La aplicacion usa la ubicacion del dispositivo para sugerir la region de leyendas.</p>
+    </section>
+
+    <ion-card class="location-card">
+      <ion-card-content>
+        <div #mapElement class="map" role="img" aria-label="Mapa con la ubicacion del usuario"></div>
+        <ion-button expand="block" (click)="refreshLocation()" [disabled]="isLoading()">
+          {{ isLoading() ? 'Buscando ubicacion...' : 'Actualizar ubicacion' }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    @if (location(); as current) {
+      <ion-card class="location-card details-card">
+        <ion-card-header><ion-card-title>Coordenadas detectadas</ion-card-title></ion-card-header>
+        <ion-card-content>
+          <p><strong>Latitud:</strong> {{ current.latitude | number:'1.5-5' }}</p>
+          <p><strong>Longitud:</strong> {{ current.longitude | number:'1.5-5' }}</p>
+          <p><strong>Precision:</strong> {{ current.accuracy | number:'1.0-0' }} m</p>
+          <p><strong>Region sugerida:</strong> {{ regionName }}</p>
+        </ion-card-content>
+      </ion-card>
+    }
+
+    @if (mapError() || errorMessage()) {
+      <p class="error-message">{{ mapError() || errorMessage() }}</p>
+    }
+  </main>
+</ion-content>

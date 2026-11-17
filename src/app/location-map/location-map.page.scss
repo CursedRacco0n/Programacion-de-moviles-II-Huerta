@@ -1,0 +1,12 @@
+.location-page { --background: #f7f3ec; }
+.location-content { max-width: 900px; margin: 0 auto; padding: 40px 18px 90px; }
+.intro { margin-bottom: 24px; }
+.eyebrow { margin: 0 0 10px; color: #a45732; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin: 0 0 12px; color: #173042; font-family: Georgia, serif; font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.05; }
+.intro > p:last-child { color: #547184; line-height: 1.6; }
+.location-card { margin: 0 0 18px; border: 1px solid #d8e1e3; border-radius: 18px; box-shadow: 0 14px 30px rgba(23, 48, 66, .1); }
+.map { width: 100%; height: 54vh; min-height: 330px; background: #dce5e5; border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+:host ::ng-deep .leaflet-container { width: 100%; height: 100%; z-index: 0; }
+.details-card ion-card-title { color: #173042; font-family: Georgia, serif; }
+.details-card p { color: #385766; }
+.error-message { color: #a33f3f; }

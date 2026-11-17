@@ -20,6 +20,7 @@ import {
 import { Router } from '@angular/router';
 import { RegionSelectionService } from '../services/region-selection.service';
 import { LegendService, UrbanLegend } from '../services/legend.service';
+import { LocationService } from '../services/location.service';
 
 interface Region {
   id: string;
@@ -56,6 +57,7 @@ export class Tab2Page implements OnInit {
   private readonly regionSelection = inject(RegionSelectionService);
   private readonly router = inject(Router);
   private readonly legendService = inject(LegendService);
+  private readonly locationService = inject(LocationService);
 
   readonly regions: Region[] = [
     {
@@ -92,8 +94,21 @@ export class Tab2Page implements OnInit {
     if (savedRegionId && this.regions.some((region) => region.id === savedRegionId)) {
       this.selectedRegionId = savedRegionId;
       this.confirmedRegion = this.regions.find((region) => region.id === savedRegionId) ?? null;
-      await this.loadLegendsForSelection();
+    } else {
+      try {
+        const location = await this.locationService.locateUser();
+        this.selectedRegionId = this.locationService.regionForCoordinates(
+          location.latitude,
+          location.longitude,
+        );
+        await this.regionSelection.select(this.selectedRegionId);
+        this.confirmedRegion = this.regions.find((region) => region.id === this.selectedRegionId) ?? null;
+      } catch {
+        // The default region remains available when location permission is denied.
+      }
     }
+
+    await this.loadLegendsForSelection();
   }
 
   async loadLegendsForSelection(): Promise<void> {
